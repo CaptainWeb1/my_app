@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   NavigationController _appBarController;
   NavigationController _bottomBarController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  String _fruit = "pomme";
 
   @override
   void initState() {
@@ -38,11 +39,44 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("text")
+              Text(_fruit),
+              SizedBox(height: 20,),
+              PopupMenuButton(
+                initialValue: _fruit,
+                onSelected: (value) {
+                  setState(() {
+                    _fruit = value;
+                  });
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      value: "pomme",
+                      child: Text("pomme"),
+                    ),
+                    PopupMenuItem(
+                      value: "poire",
+                      child: Text("poire"),
+                    ),
+                    PopupMenuItem(
+                      value: "raisin",
+                      child: Text("raisin"),
+                    ),
+                  ];
+                }
+              )
             ],
           )
       ), //
-      bottomNavigationBar: BottomNavigationBarWidget(bottomBarController: _bottomBarController,),// This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBarWidget(bottomBarController: _bottomBarController,),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => print("click"),
+        tooltip: "Si tu cliques il va se passer ça",
+        foregroundColor: Colors.white,
+        splashColor: Colors.purple,
+        child: Text("click"),
+      ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
