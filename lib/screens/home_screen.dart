@@ -64,6 +64,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Text("open dialog")
               ),
+              SizedBox(height: 20,),
+              ElevatedButton(
+                  onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text("je suis une snackbar"),
+                        backgroundColor: Colors.green,
+                        onVisible: () {
+                          print("snackbar est ouverte");
+                        },
+                        padding: EdgeInsets.all(20),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                            Radius.circular(30)
+                          )
+                        ),
+                      behavior: SnackBarBehavior.fixed,
+                      duration: Duration(days: 500),
+                      action: SnackBarAction(
+                        label: "close",
+                        onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+                        textColor: Colors.white,
+                      ),
+                    )
+                  ),
+                  child: Text("open snackbar")
+              ),
+              SizedBox(height: 20,),
+              ElevatedButton(
+                  onPressed: () => showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: 300,
+                          color: Colors.purple[100],
+                          child: Text("texte"),
+                        );
+                      }
+                  ),
+                  child: Text("open modal bottom sheet")
+              )
             ],
           )
       ), // This trailing comma makes auto-formatting nicer for build methods.
