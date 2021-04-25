@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/utils/navigation_utils.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -11,9 +10,36 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => new _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
-  bool _checked = false;
+  TabController _tabController;
+  int _index = 0;
+
+  void initTabController() {
+    _tabController = TabController(
+        length: 2,
+        vsync: this
+    );
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  void _handleTabSelection() {
+    setState(() {
+      _index = _tabController.index;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initTabController();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,33 +50,34 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(_checked ? "coché" : "non coché"),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                  onPressed: () => NavigationUtils.showMainDialog(
-                      context: context,
-                      title: "pomme",
-                      onChecked: (value) {
-                        setState(() {
-                          _checked = value;
-                        });
-                      },
-                      isChecked: _checked
-                      //onClick: () => print("click sur bouton")
-                  ),
-                  child: Text("open dialog")
+              TabBar(
+                  controller: _tabController,
+                  tabs: [
+                    Tab(
+                      icon: Icon(
+                          Icons.cached_rounded,
+                          color: Colors.blue,
+                      ),
+                    ),
+                    Tab(
+                      icon: Icon(
+                          Icons.pan_tool,
+                          color: Colors.blue,
+                      ),
+                    ),
+                  ]
               ),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                  onPressed: () => NavigationUtils.showMainSnackBar(context: context),
-                  child: Text("open snackbar")
-              ),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                  onPressed: () => NavigationUtils.showMainModalBottomSheet(context: context) ,
-                  child: Text("open modal bottom sheet")
+              Container(
+                height: 200,
+                child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      Text("tab 1"),
+                      Text("tab 2"),
+                    ]
+                ),
               )
             ],
           )
