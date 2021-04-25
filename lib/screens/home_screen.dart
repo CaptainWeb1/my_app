@@ -10,35 +10,21 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => new _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
 
-  TabController _tabController;
-  int _index = 0;
+  final PageController _pageController = PageController(
+      initialPage: 1,
+      viewportFraction: 0.75
+  );
 
-  void initTabController() {
-    _tabController = TabController(
-        length: 2,
-        vsync: this
-    );
-    _tabController.addListener(_handleTabSelection);
-  }
-
-  void _handleTabSelection() {
-    setState(() {
-      _index = _tabController.index;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initTabController();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  void _listenToPageChanges(int index) {
+    if(index == 0) {
+      print("page 0");
+    } else if(index == 1) {
+      print("page 1");
+    } else {
+      print("page 2");
+    }
   }
 
   @override
@@ -48,39 +34,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                      icon: Icon(
-                          Icons.cached_rounded,
-                          color: Colors.blue,
-                      ),
-                    ),
-                    Tab(
-                      icon: Icon(
-                          Icons.pan_tool,
-                          color: Colors.blue,
-                      ),
-                    ),
-                  ]
-              ),
-              Container(
-                height: 200,
-                child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      Text("tab 1"),
-                      Text("tab 2"),
-                    ]
-                ),
-              )
-            ],
-          )
+      body: PageView(
+        controller: _pageController,
+        scrollDirection: Axis.horizontal,
+        onPageChanged: (index) {
+          _listenToPageChanges(index);
+        },
+        children: [
+          Container(
+              color: Colors.red[200],
+              child: Text("first page")
+          ),
+          Container(
+              color: Colors.green[200],
+              child: Text("second page")
+          ),
+          Container(
+              color: Colors.purple[200],
+              child: Text("third page")
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
