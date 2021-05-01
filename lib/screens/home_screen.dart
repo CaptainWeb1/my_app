@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CardWidget(
-            post: Post(
+            cardData: Post(
               userName: "Bgdu92",
               picture: Icon(Icons.emoji_people),
               isOnline: true,
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           SizedBox(height: 20,),
           CardWidget(
-            product: Product(
+            cardData: Product(
               productName: "Stylo",
               icon: Icon(Icons.create),
               category: "fournitures",
