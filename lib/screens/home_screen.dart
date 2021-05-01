@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/models/post.dart';
+import 'package:my_app/models/product.dart';
+import 'package:my_app/widgets/card_widget.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -12,21 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  final PageController _pageController = PageController(
-      initialPage: 1,
-      viewportFraction: 0.75
-  );
-
-  void _listenToPageChanges(int index) {
-    if(index == 0) {
-      print("page 0");
-    } else if(index == 1) {
-      print("page 1");
-    } else {
-      print("page 2");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -34,25 +22,30 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: PageView(
-        controller: _pageController,
-        scrollDirection: Axis.horizontal,
-        onPageChanged: (index) {
-          _listenToPageChanges(index);
-        },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-              color: Colors.red[200],
-              child: Text("first page")
+          CardWidget(
+            post: Post(
+              userName: "Bgdu92",
+              picture: Icon(Icons.emoji_people),
+              isOnline: true,
+              likes: 5,
+              postText: "Salut les petits chats",
+              views: 150000
+            ),
           ),
-          Container(
-              color: Colors.green[200],
-              child: Text("second page")
-          ),
-          Container(
-              color: Colors.purple[200],
-              child: Text("third page")
-          ),
+          SizedBox(height: 20,),
+          CardWidget(
+            product: Product(
+              productName: "Stylo",
+              icon: Icon(Icons.create),
+              category: "fournitures",
+              price: 1.57,
+              availability: Availability.AVAILABLE,
+              weight: 7
+            ),
+          )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
