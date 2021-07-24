@@ -15,9 +15,29 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  String _userName = "Pas d'utilisateur trouvé";
+
+  Future<String> _getUsername() {
+    return Future.delayed(Duration(milliseconds: 5000)).then((value) {
+      return "Florian";
+    });
+  }
+
+  _initDatabase() async {
+    String _userNameFuture = await _getUsername();
+    setState(() {
+      _userName = _userNameFuture;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -25,26 +45,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CardWidget(
-            cardData: Post(
-              userName: "Bgdu92",
-              picture: Icon(Icons.emoji_people),
-              isOnline: true,
-              likes: 5,
-              postText: "Salut les petits chats",
-              views: 150000
-            ),
-          ),
-          SizedBox(height: 20,),
-          CardWidget(
-            cardData: Product(
-              productName: "Stylo",
-              icon: Icon(Icons.create),
-              category: "fournitures",
-              price: 1.57,
-              availability: Availability.AVAILABLE,
-              weight: 7
-            ),
+          Center(
+              child: Text("Username : $_userName")
           )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
