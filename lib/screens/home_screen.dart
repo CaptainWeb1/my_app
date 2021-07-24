@@ -15,25 +15,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  String _userName = "Pas d'utilisateur trouvé";
-
   Future<String> _getUsername() {
     return Future.delayed(Duration(milliseconds: 5000)).then((value) {
       return "Florian";
     });
-  }
-
-  _initDatabase() async {
-    String _userNameFuture = await _getUsername();
-    setState(() {
-      _userName = _userNameFuture;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initDatabase();
   }
 
   @override
@@ -46,7 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-              child: Text("Username : $_userName")
+            child: FutureBuilder(
+              future: _getUsername(),
+              builder: (context, snapshot) {
+                if(snapshot.hasData) {
+                  return Text("Username : ${snapshot.data}");
+                } else if(snapshot.hasError) {
+                  return Text("Il y a eu une erreur pour charger les données");
+                } else {
+                  return Text("En cours de chargement");
+                }
+              },
+            )
           )
         ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
