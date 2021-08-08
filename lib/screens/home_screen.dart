@@ -22,34 +22,35 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _displaySeconds() async {
-    _countForOneSecond().listen(
-      (data) {
-        print(data);
-      },
-      onError: (error) {
-        print(error);
-      },
-      onDone: () {
-        print("c'est terminé");
-      }
-      );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _displaySeconds();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Text("texte")
+      body: StreamBuilder<int>(
+        stream: _countForOneSecond(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            if(snapshot.connectionState == ConnectionState.done) {
+              return Center(
+                  child: Text("terminé")
+              );
+            } else {
+              return Center(
+                  child: Text(snapshot.data.toString())
+              );
+            }
+          } else if (snapshot.hasError) {
+            return Center(
+                child: Text("erreur")
+            );
+          } else {
+              return Center(
+                  child: Text("chargement")
+              );
+          }
+        }
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
