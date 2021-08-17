@@ -13,31 +13,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  int _age1 = 16;
-  String _message = "cliquez sur le bouton";
+  int _number = 8;
+  String _value = "valeur";
 
   void click() {
     setState(() {
       try {
-        checkAge(_age1);
+        _number = 10 ~/ 0;
+        _value = _number.toString();
+    } catch(e, stacktrace) {
+      print("erreur : $e");
+      print("stacktrace : $stacktrace");
+      if(e is IntegerDivisionByZeroException) {
+        _value = "erreur division par zéro";
       }
-      catch(e, stacktrace) {
-        print("erreur : $e");
-        print("stacktrace : $stacktrace");
-        if (e is AgeException) {
-          _message = e.error();
-        }
+    } finally {
+        print("c'est fini");
       }
     });
-
-  }
-
-  void checkAge(int age) {
-    if(age > 18) {
-      _message = "tu es mineur c'est ok";
-    } else {
-     throw AgeException();
-    }
   }
 
   @override
@@ -56,14 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               child: Text("click"),
             ),
-            Text(_message)
+            Text(_value)
           ],
         ),
       )// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-}
-
-class AgeException implements Exception {
-  String error() => 'Désolé tu es mineur';
 }
