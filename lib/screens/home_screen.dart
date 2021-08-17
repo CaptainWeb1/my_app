@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
 
@@ -15,10 +13,30 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  Stream<int> _countForOneSecond() async* {
-    for(int i = 1; i <= 5; i++) {
-      await Future.delayed(const Duration(seconds: 1));
-      yield i;
+  int _age1 = 16;
+  String _message = "cliquez sur le bouton";
+
+  void click() {
+    setState(() {
+      try {
+        checkAge(_age1);
+      }
+      catch(e, stacktrace) {
+        print("erreur : $e");
+        print("stacktrace : $stacktrace");
+        if (e is AgeException) {
+          _message = e.error();
+        }
+      }
+    });
+
+  }
+
+  void checkAge(int age) {
+    if(age > 18) {
+      _message = "tu es mineur c'est ok";
+    } else {
+     throw AgeException();
     }
   }
 
@@ -28,30 +46,24 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: StreamBuilder<int>(
-        stream: _countForOneSecond(),
-        builder: (context, snapshot) {
-          if(snapshot.hasData) {
-            if(snapshot.connectionState == ConnectionState.done) {
-              return Center(
-                  child: Text("terminé")
-              );
-            } else {
-              return Center(
-                  child: Text(snapshot.data.toString())
-              );
-            }
-          } else if (snapshot.hasError) {
-            return Center(
-                child: Text("erreur")
-            );
-          } else {
-              return Center(
-                  child: Text("chargement")
-              );
-          }
-        }
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                click();
+              },
+              child: Text("click"),
+            ),
+            Text(_message)
+          ],
+        ),
+      )// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class AgeException implements Exception {
+  String error() => 'Désolé tu es mineur';
 }

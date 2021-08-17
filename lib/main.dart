@@ -4,6 +4,12 @@ import 'package:my_app/screens/home_screen.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
+
+  void addText1() {
+
+  }
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -11,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      home: HomeScreen(title: 'Accueil'),
+      home: HomeScreen(title: 'Try Catch'),
     );
   }
 }
